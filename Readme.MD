@@ -2,7 +2,7 @@
 
 An interactive Python tool that plots the **denominator (characteristic) polynomial of the gradient-amplifier current loop** after the pole-zero cancellation `CF · RF = L / R_L` has been applied. Sliders, text boxes and a range selector let you tune the circuit and watch the polynomial, its roots and the damping figures update in real time, on a symmetric-log x-axis that keeps poles several decades apart visible at once.
 
-Component names follow the schematic in `circuito_gradientes.svg`. See [Naming](#naming) if you are coming from an older version of the script.
+Component names follow the schematic in `circuito_gradientes.svg`.
 
 ## Purpose
 
@@ -103,21 +103,6 @@ Moving the mouse over the plot shows a crosshair and a tooltip with the cursor's
   - Pole values in rad/s and Hz, or `ωn` and `ζ` if complex
   - Discriminant `b² − 4ac` and a diagnosis: *two real negative poles (stable)* or *complex conjugates (underdamped)*
 
-## Naming
-
-Earlier versions of this tool used the reference designators of an older schematic. The names in this README follow `circuito_gradientes.svg`:
-
-| This README / schematic | Older name | Role                          |
-| ----------------------- | ---------- | ----------------------------- |
-| R3                      | R8         | current-feedback resistor     |
-| RF                      | R9         | compensation resistor         |
-| CF                      | C3         | compensation capacitor        |
-| C1                      | C2         | parallel feedback capacitor   |
-| R4                      | R_shunt    | current-sense shunt (0.1 Ω)   |
-| R_L                     | RL         | coil resistance               |
-
-The identifiers inside the script (variables, slider labels and the `*_MIN` / `*_MAX` constants) still use the older names, so rename them there too if you want the window to match this document.
-
 ## Requirements
 
 - Python 3.8 or newer
@@ -143,7 +128,7 @@ Drag any slider, type a new `L` or `R_L`, or change the x-range mode, and the wh
 ## Important Notes
 
 - **Only the post-cancellation polynomial is modeled.** The plotted polynomial is valid only while `CF · RF = L / R_L`. The tool enforces this by coupling the sliders, but it does **not** model the broken-cancellation case.
-- **Slider limits can break the cancellation.** If the value required to satisfy `CF · RF = L / R_L` falls outside the other slider's range, it is clamped to the limit and the condition no longer holds exactly. Compare `CF·RF` against `L/R_L` in the info panel; if they differ, pick a different `CF` (or `RF`) or widen the limits.
+- **Slider limits can break the cancellation.** If the value required to satisfy `CF · RF = L / R_L` falls outside the other slider's range, it is clamped to the limit and the condition no longer holds exactly. Compare `CF·RF` against `L/R_L` in the info panel; if they differ, pick a different `CF` (or `RF`) or widen the limits (`RF_MIN` / `RF_MAX`, `CF_MIN` / `CF_MAX`).
 - **Initial state.** The default values (`CF·RF = 1e-4`, `L/R_L = 6.25e-5`) do not satisfy the condition at startup. The coupling is applied as soon as you move `CF` or `RF`, or submit a value for `L` or `R_L`.
 - **`R4` is a fixed constant** (`0.1 Ω`). Edit it at the top of the script if your current-sense resistor differs.
 - **No real roots means complex poles.** A negative discriminant means the closed loop has a complex-conjugate pole pair, i.e. an underdamped response; use the reported `ζ` to judge the overshoot.
