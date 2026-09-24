@@ -1,33 +1,32 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, RadioButtons, TextBox
 
 # ===== constante fija =====
-R_shunt = 0.1
+R4 = 0.1                # shunt de sensado de corriente [Ohm]
 
 # ===== valores iniciales =====
-R8_0, R9_0, C2_0, C3_0 = 270, 10000, 10e-12, 10e-9
-RL_0 = 0.4
-L_0 = 25e-6         
+R3_0, RF_0, C1_0, CF_0 = 270, 10000, 10e-12, 10e-9
+R_L_0 = 0.4
+L_0 = 25e-6
 
 # limites de sliders
-R9_MIN, R9_MAX = 1000, 100000
-C2_MIN, C2_MAX = 10e-12, 1000e-12
-C3_MIN, C3_MAX = 100e-12, 100e-9
+RF_MIN, RF_MAX = 1000, 100000
+C1_MIN, C1_MAX = 10e-12, 1000e-12
+CF_MIN, CF_MAX = 100e-12, 100e-9
 
 # colores
 COL_TRAZA = "#0a9c8e"
 COL_RAIZ = "#dd4636"
 COL_WN = "#c07a00"
 
-# estado (modo del eje, parametros ingresables L y RL, y lock anti-recursion)
-estado = {"modo": "Auto (decadas)", "L": L_0, "RL": RL_0, "lock": False}
+# estado (modo del eje, parametros ingresables L y R_L, y lock anti-recursion)
+estado = {"modo": "Auto (decadas)", "L": L_0, "R_L": R_L_0, "lock": False}
 
 
 def Kprod():
-    """Producto impuesto C3*R9 = L/RL."""
-    return estado["L"] / estado["RL"]
+    """Producto impuesto CF*RF = L/R_L."""
+    return estado["L"] / estado["R_L"]
 
 
 def clamp(v, lo, hi):
@@ -35,10 +34,10 @@ def clamp(v, lo, hi):
 
 
 # ===== calculo =====
-def coeficientes(R8, R9, C2, C3, RL):
-    K = (1 / R_shunt) * R8 * RL
-    a = K * C2 * C3 * R9
-    b = K * (C2 + C3)
+def coeficientes(R3, RF, C1, CF, R_L):
+    K = (1 / R4) * R3 * R_L
+    a = K * C1 * CF * RF
+    b = K * (C1 + CF)
     c = 1.0
     return a, b, c
 
@@ -108,13 +107,13 @@ annot = ax.annotate("", xy=(0, 0), xytext=(12, 12),
                               ec="0.6", alpha=0.92))
 annot.set_visible(False)
 
-# ---- celdas de texto para L y RL (parametros ingresables) ----
-fig.text(0.71, 0.925, "Parametros  (C3*R9 = L / RL)", fontsize=10,
+# ---- celdas de texto para L y R_L (parametros ingresables) ----
+fig.text(0.71, 0.925, "Parametros  (CF*RF = L / R_L)", fontsize=10,
          fontweight="bold")
 ax_L = fig.add_axes([0.80, 0.875, 0.10, 0.038])
-ax_RL = fig.add_axes([0.80, 0.825, 0.10, 0.038])
+ax_R_L = fig.add_axes([0.80, 0.825, 0.10, 0.038])
 tb_L = TextBox(ax_L, "L [H]  ", initial=f"{L_0:.3e}")
-tb_RL = TextBox(ax_RL, "RL [Ohm]  ", initial=f"{RL_0:g}")
+tb_R_L = TextBox(ax_R_L, "R_L [Ohm]  ", initial=f"{R_L_0:g}")
 
 # selector de rango X
 ax_radio = fig.add_axes([0.72, 0.50, 0.24, 0.24])
@@ -126,25 +125,25 @@ info = fig.text(0.70, 0.42, "", va="top", ha="left", fontsize=9,
                 family="monospace")
 
 # ---- sliders ----
-ax_R8 = fig.add_axes([0.30, 0.28, 0.30, 0.03])
-ax_R9 = fig.add_axes([0.30, 0.23, 0.30, 0.03])
-ax_C2 = fig.add_axes([0.30, 0.18, 0.30, 0.03])
-ax_C3 = fig.add_axes([0.30, 0.13, 0.30, 0.03])
+ax_R3 = fig.add_axes([0.30, 0.28, 0.30, 0.03])
+ax_RF = fig.add_axes([0.30, 0.23, 0.30, 0.03])
+ax_C1 = fig.add_axes([0.30, 0.18, 0.30, 0.03])
+ax_CF = fig.add_axes([0.30, 0.13, 0.30, 0.03])
 
-sR8 = Slider(ax_R8, "R8 [Ohm]", 1, 1000, valinit=R8_0, valfmt="%.0f",
+sR3 = Slider(ax_R3, "R3 [Ohm]", 1, 1000, valinit=R3_0, valfmt="%.0f",
              color=COL_TRAZA)
-sR9 = Slider(ax_R9, "R9 [Ohm]", R9_MIN, R9_MAX, valinit=R9_0, valfmt="%.0f",
+sRF = Slider(ax_RF, "RF [Ohm]", RF_MIN, RF_MAX, valinit=RF_0, valfmt="%.0f",
              color=COL_TRAZA)
-sC2 = Slider(ax_C2, "C2 [F]", C2_MIN, C2_MAX, valinit=C2_0, valfmt="%.2e",
+sC1 = Slider(ax_C1, "C1 [F]", C1_MIN, C1_MAX, valinit=C1_0, valfmt="%.2e",
              color=COL_TRAZA)
-sC3 = Slider(ax_C3, "C3 [F]", C3_MIN, C3_MAX, valinit=C3_0, valfmt="%.2e",
+sCF = Slider(ax_CF, "CF [F]", CF_MIN, CF_MAX, valinit=CF_0, valfmt="%.2e",
              color=COL_TRAZA)
 
 
 # ===== dibujo / lecturas =====
 def actualizar(_=None):
-    RL = estado["RL"]
-    a, b, c = coeficientes(sR8.val, sR9.val, sC2.val, sC3.val, RL)
+    R_L = estado["R_L"]
+    a, b, c = coeficientes(sR3.val, sRF.val, sC1.val, sCF.val, R_L)
     rts = raices(a, b, c)
     disc = b * b - 4 * a * c
     xmin, xmax, lt = ventana(rts, estado["modo"], a, c)
@@ -194,12 +193,12 @@ def actualizar(_=None):
             rtxt = "Sin raices reales"
     diag = ("2 polos reales negativos\n(sistema estable)" if disc >= 0
             else "complejas conjugadas\n(subamortiguado)")
-    prod = sC3.val * sR9.val
+    prod = sCF.val * sRF.val
     info.set_text(
         f"L       = {estado['L']:.3e} H\n"
-        f"RL      = {estado['RL']:g} Ohm\n"
-        f"R_shunt = {R_shunt} Ohm\n"
-        f"C3*R9   = {prod:.3e}  (L/RL = {Kprod():.3e})\n"
+        f"R_L     = {estado['R_L']:g} Ohm\n"
+        f"R4      = {R4} Ohm\n"
+        f"CF*RF   = {prod:.3e}  (L/R_L = {Kprod():.3e})\n"
         f"{'-'*30}\n"
         f"Polos [rad/s]:\n{rtxt}\n\n"
         f"Disc b^2-4ac = {disc:.3e}\n{diag}"
@@ -208,32 +207,32 @@ def actualizar(_=None):
     fig.canvas.draw_idle()
 
 
-# ===== acoplamiento C3 <-> R9  (C3*R9 = L/RL) =====
-def on_c3(_=None):
+# ===== acoplamiento CF <-> RF  (CF*RF = L/R_L) =====
+def on_cf(_=None):
     if estado["lock"]:
         return
     estado["lock"] = True
-    r9 = clamp(Kprod() / sC3.val, R9_MIN, R9_MAX)
-    sR9.set_val(r9)                       # mueve el otro slider (callback bloqueado)
+    rf = clamp(Kprod() / sCF.val, RF_MIN, RF_MAX)
+    sRF.set_val(rf)                       # mueve el otro slider (callback bloqueado)
     estado["lock"] = False
     actualizar()
 
 
-def on_r9(_=None):
+def on_rf(_=None):
     if estado["lock"]:
         return
     estado["lock"] = True
-    c3 = clamp(Kprod() / sR9.val, C3_MIN, C3_MAX)
-    sC3.set_val(c3)
+    cf = clamp(Kprod() / sRF.val, CF_MIN, CF_MAX)
+    sCF.set_val(cf)
     estado["lock"] = False
     actualizar()
 
 
 def reconciliar():
-    """Mantiene C3 y recalcula R9 tras cambiar L o RL."""
+    """Mantiene CF y recalcula RF tras cambiar L o R_L."""
     estado["lock"] = True
-    r9 = clamp(Kprod() / sC3.val, R9_MIN, R9_MAX)
-    sR9.set_val(r9)
+    rf = clamp(Kprod() / sCF.val, RF_MIN, RF_MAX)
+    sRF.set_val(rf)
     estado["lock"] = False
     actualizar()
 
@@ -248,13 +247,13 @@ def on_L(text):
         reconciliar()
 
 
-def on_RL(text):
+def on_R_L(text):
     try:
         val = float(text)
     except ValueError:
         return
     if val > 0:
-        estado["RL"] = val
+        estado["R_L"] = val
         reconciliar()
 
 
@@ -270,7 +269,7 @@ def on_move(event):
             cursor_line.set_visible(False)
             fig.canvas.draw_idle()
         return
-    a, b, c = coeficientes(sR8.val, sR9.val, sC2.val, sC3.val, estado["RL"])
+    a, b, c = coeficientes(sR3.val, sRF.val, sC1.val, sCF.val, estado["R_L"])
     xh = event.xdata
     yh = a * xh * xh + b * xh + c
     cursor_line.set_xdata([xh, xh])
@@ -282,12 +281,12 @@ def on_move(event):
 
 
 # eventos
-sR8.on_changed(actualizar)
-sC2.on_changed(actualizar)
-sR9.on_changed(on_r9)
-sC3.on_changed(on_c3)
+sR3.on_changed(actualizar)
+sC1.on_changed(actualizar)
+sRF.on_changed(on_rf)
+sCF.on_changed(on_cf)
 tb_L.on_submit(on_L)
-tb_RL.on_submit(on_RL)
+tb_R_L.on_submit(on_R_L)
 radio.on_clicked(on_radio)
 fig.canvas.mpl_connect("motion_notify_event", on_move)
 
@@ -297,5 +296,3 @@ actualizar()
 
 if __name__ == "__main__":
     plt.show()
-    
-    
