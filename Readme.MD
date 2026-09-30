@@ -131,18 +131,12 @@ Drag any slider, type a new `L` or `R_L`, or change the x-range mode, and the wh
 - **Slider limits can break the cancellation.** If the value required to satisfy `CF · RF = L / R_L` falls outside the other slider's range, it is clamped to the limit and the condition no longer holds exactly. Compare `CF·RF` against `L/R_L` in the info panel; if they differ, pick a different `CF` (or `RF`) or widen the limits (`RF_MIN` / `RF_MAX`, `CF_MIN` / `CF_MAX`).
 - **Initial state.** The default values (`CF·RF = 1e-4`, `L/R_L = 6.25e-5`) do not satisfy the condition at startup. The coupling is applied as soon as you move `CF` or `RF`, or submit a value for `L` or `R_L`.
 - **`R4` is a fixed constant** (`0.1 Ω`). Edit it at the top of the script if your current-sense resistor differs.
+
+- **`R5` is a implicit constant** (`10xR3 Ω`). For a Current/Voltage = 1 gain, `R4 = R3 / R5`
+
 - **No real roots means complex poles.** A negative discriminant means the closed loop has a complex-conjugate pole pair, i.e. an underdamped response; use the reported `ζ` to judge the overshoot.
 - **Stability diagnosis assumes positive coefficients.** With all components positive, `a`, `b` and `c` are positive, so real roots are always negative. The "stable" label relies on that.
 
-## File Structure
-
-```
-closed_loop_polynomial.py   # Main script with the interactive plot
-circuito_gradientes.py      # Schematic drawn with Schemdraw (source of the names)
-circuito_gradientes.svg     # Rendered schematic
-ecuaciones.tex              # Loop equations (1)-(3)
-README.md                   # This file
-```
 
 ## License
 
