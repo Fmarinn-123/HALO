@@ -27,7 +27,7 @@ It is intended as a **design and tuning aid**, not a full SPICE replacement.
 
 The controller is the inverting stage around U1 in the schematic:
 
-- `R3` feeds the current-feedback signal from the shunt into the summing node. `R5` must be 10 times `R3` if `R4` = 0.1, for a 1 [A]/[volt] DC current Gain. Gain = `R5`/(`R3``R4`)
+- `R3` feeds the current-feedback signal from the shunt into the summing node. `R5` must be 10 times `R3` if `R4` = 0.1, for a 1 [A]/[volt] DC current Gain. Gain = `R5`/(`R3 R4`)
 - `RF + CF` in series, in parallel with `C1`, form the feedback impedance (a PI controller with an extra high-frequency pole).
 - `R4` is the current-sense shunt; the loop gain is proportional to `R4 / R3`.
 - `L` and `R_L` are the gradient coil driven by the output stage.
