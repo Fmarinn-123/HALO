@@ -136,7 +136,7 @@ Drag any slider, type a new `L` or `R_L`, or change the x-range mode, and the wh
 
 - **No real roots means complex poles.** A negative discriminant means the closed loop has a complex-conjugate pole pair, i.e. an underdamped response; use the reported `ζ` to judge the overshoot.
 - **Stability diagnosis assumes positive coefficients.** With all components positive, `a`, `b` and `c` are positive, so real roots are always negative. The "stable" label relies on that.
-
+- **`R21` is an auxiliar resistor.** Rv2 adjust Bias voltage, therefore control de polarization current (30mA works well). Rv2 could be replaced by `R21` after find the correct value for Rv2.
 
 ## License
 
