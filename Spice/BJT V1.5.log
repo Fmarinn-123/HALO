@@ -1,0 +1,25 @@
+LTspice 26.0.1 for Windows
+Circuit: C:\Users\felip\OneDrive\Desktop\Spice\BJT V1.5.net
+Start Time: Sat Oct  3 23:09:19 2026
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+Early termination of direct N-R iteration.
+Direct Newton iteration failed to find operating point.
+Starting Gmin stepping
+Gmin stepping succeeded in finding the operating point.
+
+Total elapsed time: 0.489 seconds.
+
+Files loaded:
+C:\Users\felip\OneDrive\Desktop\Spice\BJT V1.5.net
+C:\Users\felip\AppData\Local\LTspice\lib\cmp\standard.dio
+C:\Users\felip\AppData\Local\LTspice\lib\cmp\standard.bjt
+C:\Users\felip\OneDrive\Desktop\Spice\models\UA741.lib
+C:\Users\felip\OneDrive\Desktop\Spice\models\TIP2955.LIB
+C:\Users\felip\OneDrive\Desktop\Spice\models\TIP3055.LIB
+C:\Users\felip\OneDrive\Desktop\Spice\models\bd140.lib
+C:\Users\felip\OneDrive\Desktop\Spice\models\bd139.lib
+
