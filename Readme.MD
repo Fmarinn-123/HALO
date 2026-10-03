@@ -30,7 +30,7 @@ The controller is the inverting stage around U1 in the schematic:
 - `R3` feeds the current-feedback signal from the shunt into the summing node. `R5` must be 10 times `R3` if `R4` = 0.1, for a 1 [A]/[volt] DC current Gain. Gain = `R5`/(`R3 R4`)
 - `RF + CF` in series, in parallel with `C1`, form the feedback impedance (a PI controller with an extra high-frequency pole).
 - `R4` is the current-sense shunt; the loop gain is proportional to `R4 / R3`.
-- - `L` and `R_L` are the gradient coil driven by the output stage. The shunt `R4` and the emitter resistors `R6`/`R7` sit in series with the coil, so when they are comparable to `R_L` add them in for a faithful simulation: `R_L(eq) = R_L + R7 + R4` while the amplifier sources positive current and `R_L(eq) = R_L + R6 + R4` while negative. With the values in the schematic (0.1 Ω each), a 0.2 Ω coil behaves as `R_L(eq) = 0.4 Ω`.
+- `L` and `R_L` are the gradient coil driven by the output stage. The shunt `R4` and the emitter resistors `R6`/`R7` sit in series with the coil, so when they are comparable to `R_L` add them in for a faithful simulation: `R_L(eq) = R_L + R7 + R4` while the amplifier sources positive current and `R_L(eq) = R_L + R6 + R4` while negative. With the values in the schematic (0.1 Ω each), a 0.2 Ω coil behaves as `R_L(eq) = 0.4 Ω`.
 
 ## How It Works
 
