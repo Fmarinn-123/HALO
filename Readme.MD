@@ -27,7 +27,7 @@ It is intended as a **design and tuning aid**, not a full SPICE replacement.
 
 The controller is the inverting stage around U1 in the schematic:
 
-- `R3` feeds the current-feedback signal from the shunt into the summing node. `R5` must be 10 times `R3` if `R4` = 0.1, for a 1 [A]/[volt] DC current Gain. Gain = `R5`/(`R3 R4`)
+- `R3` feeds the current-feedback signal from the shunt into the summing node. `R5` must be 10 times `R3` if `R4` = 0.1, for a 1 [A]/[volt] DC current Gain. Gain = `R3`/(`R4 R5`)
 - `RF + CF` in series, in parallel with `C1`, form the feedback impedance (a PI controller with an extra high-frequency pole).
 - `R4` is the current-sense shunt; the loop gain is proportional to `R4 / R3`.
 - `L` and `R_L` are the gradient coil driven by the output stage. The shunt `R4` and the emitter resistors `R6`/`R7` sit in series with the coil, so when they are comparable to `R_L` add them in for a faithful simulation: `R_L(eq) = R_L + R7 + R4` while the amplifier sources positive current and `R_L(eq) = R_L + R6 + R4` while negative. With the values in the schematic (0.1 Ω each), a 0.2 Ω coil behaves as `R_L(eq) = 0.4 Ω`.
@@ -132,7 +132,7 @@ Drag any slider, type a new `L` or `R_L`, or change the x-range mode, and the wh
 - **Initial state.** The default values (`CF·RF = 1e-4`, `L/R_L = 6.25e-5`) do not satisfy the condition at startup. The coupling is applied as soon as you move `CF` or `RF`, or submit a value for `L` or `R_L`.
 - **`R4` is a fixed constant** (`0.1 Ω`). Edit it at the top of the script if your current-sense resistor differs.
 
-- **`R5` is a implicit constant** (`10xR3 Ω`). For a Current/Voltage = 1 gain, `R4 = R3 / R5`
+- **`R5` is a implicit constant** (`10xR3 Ω`). For a Current/Voltage = 1 gain, `R5 = R3 / R4`
 
 - **No real roots means complex poles.** A negative discriminant means the closed loop has a complex-conjugate pole pair, i.e. an underdamped response; use the reported `ζ` to judge the overshoot.
 - **Stability diagnosis assumes positive coefficients.** With all components positive, `a`, `b` and `c` are positive, so real roots are always negative. The "stable" label relies on that.
